@@ -1,0 +1,63 @@
+
+-查看镜像 docker image 
+-查看启动容器  docker ps/docker ps -a
+-删除容器命令 docker rm ID
+-删除镜像   docker rmi ID
+-Docker运行容器的基本命令 docker run -参数  镜像名称 （eg:docker run -p 8080:8080 springboot）
+
+-拉去镜像
+docker pull
+docker pull [-a "o">] [user/ "o">]name[:tag "o">]
+docker pull laozhu/telescope:latest
+
+-启动容器
+# docker run --name pglatest -v /data/pgsql-data/:/var/lib/postgresql/data/ -p 54321:5432 -d postgres:latest
+
+ 
+
+-查看容器
+
+# docker container ls/查看运行容器 docker ps -a
+
+CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES
+
+0ad90d457159 postgres:latest "docker-entrypoint.s…" 9 seconds ago Up 8 seconds 0.0.0.0:54321->5432/tcp pglatest
+
+ 
+
+-连接数据库
+
+1. 通过运行docker容器，exec进入psql
+
+# docker exec -it pglatest psql -U postgres -d postgres
+
+psql (10.5 (Debian 10.5-1.pgdg90+1))
+
+Type "help" for help.
+
+postgres=#
+
+
+
+
+ -Docker 容器镜像删除
+
+1.停止所有的container，这样才能够删除其中的images：
+
+docker stop $(docker ps -a -q)
+
+-如果想要删除所有container的话再加一个指令：
+
+docker rm $(docker ps -a -q)
+
+2.查看当前有些什么images
+
+docker images
+
+3.删除images，通过image的id来指定删除谁
+
+docker rmi <image id>
+
+想要删除untagged images，也就是那些id为<None>的image的话可以用
+
+docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
